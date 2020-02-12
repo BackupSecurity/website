@@ -1,154 +1,113 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
+  <div>
+    <carousel :items="1" :auto-height="false" :dots="false" :nav="false">
+      <div v-for="(s, index) in slides" :key="index">
+        <div
+          class="carousel-slide"
+          :style="{
+            'background-image': 'url(' + s.src + ')',
+            'background-size': 'cover',
+            'background-position': s.position,
+            'background-color': 'rgba(0, 0, 0, 1)',
+            height: 'calc(100vh - 3.5rem)',
+            position: 'relative'
+          }"
         >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa"
-          target="_blank"
-          rel="noopener"
-          >pwa</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex"
-          target="_blank"
-          rel="noopener"
-          >vuex</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-mocha"
-          target="_blank"
-          rel="noopener"
-          >unit-mocha</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-e2e-cypress"
-          target="_blank"
-          rel="noopener"
-          >e2e-cypress</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+          <div
+            class="slide-overlay"
+            style="z-index: 0; top: 0; left: 0; background-color: rgba(0, 0, 0, .3); width: 100%; height: 100%; position: absolute"
+          >
+            <b-container>
+              <b-row>
+                <b-col style="padding-top: 8rem">
+                  <b-jumbotron
+                    style="background-color: rgba(255,255,255,0.95)"
+                    text-variant="primary"
+                  >
+                    <template v-slot:header>{{ s.title }}</template>
+
+                    <p
+                      class="lead text-dark py-3 px-5"
+                      v-html="
+                        s.hasOwnProperty('lead') ? s.lead : 'Non Specified'
+                      "
+                    ></p>
+
+                    <b-button variant="primary" :href="s.linkUrl">{{
+                      s.linkText
+                    }}</b-button>
+                  </b-jumbotron>
+                </b-col>
+              </b-row>
+            </b-container>
+          </div>
+        </div>
+      </div>
+    </carousel>
   </div>
 </template>
 
 <script>
+import carousel from "vue-owl-carousel";
+
+/* eslint-disable no-unused-vars */
 export default {
-  name: "HelloWorld",
-  props: {
-    msg: String
+  components: { carousel },
+  data() {
+    return {
+      slide: 0,
+      sliding: null,
+      slides: [
+        {
+          src: require("@/assets/images/cctv.jpeg"),
+          position: "left top",
+          title: "CCTV Installation",
+          lead:
+            "If you're looking at getting a bit more security, why not consider contacting <a href='#'>Backup Security</a> for a free quote on a CCTV installation.",
+          linkUrl: "#",
+          linkText: "Contact Us"
+        },
+        {
+          src: require("@/assets/images/club-one.jpeg"),
+          position: "right center",
+          title: "Door Security",
+          lead:
+            "Have your own venue? Contact <a href='#'>Backup Security</a> to see what we can do to help make sure your events run without a hitch.",
+          linkUrl: "#",
+          linkText: "Contact Us"
+        },
+        {
+          src: require("@/assets/images/site.jpeg"),
+          position: "center center",
+          title: "Site Security",
+          lead: `<a class='text-primary' href='#'>Backup Security</a> can provide on-site security solutions to guarantee complete protection of your land & property.`,
+          linkUrl: "#",
+          linkText: "Contact Us"
+        },
+        {
+          src: require("@/assets/images/patrol.jpeg"),
+          position: "top left",
+          title: "Regular Patrols",
+          lead:
+            "We can send a marked <a href='#'>Backup Security</a> patrol for regular visits to venues such as building sites, listed buildings, vacant houses and building that are only closed part-time such as colleges.",
+          linkUrl: "#",
+          linkText: "Contact Us"
+        }
+      ]
+    };
+  },
+  methods: {
+    onSlideStart(slide) {
+      this.sliding = true;
+    },
+    onSlideEnd(slide) {
+      this.sliding = false;
+    }
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+<style lang="scss" scoped>
+.carousel-slide {
+  height: 600px;
 }
 </style>
